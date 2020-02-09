@@ -58,6 +58,50 @@ public class DatabaseUtils
     }
     
     /**
+     * Search the database and if any data is contained then return it
+     * @param tableName the name of the table to search for data
+     * @return data contained in the table
+     */
+    public ArrayList<String[]> getDataFromTable(String tableName)
+    {
+        ArrayList<String[]> dataFound = new ArrayList<>();
+        
+        try
+        {
+            // Use the JDBC Driver Class for Connections
+            Class.forName("com.mysql.jdbc.Driver");
+            
+            // Establish Connection to the database
+            Connection con = DriverManager.getConnection(
+            connectionString, dbUsername, dbPassword);
+            
+            Statement stmt = con.createStatement();
+            
+            // Select all from the table specified
+            String searchQuery = "SELECT * FROM " + tableName;
+            
+            ResultSet rs = stmt.executeQuery(searchQuery);
+            
+            // If the result set contains information, add to data found
+            while(rs.next())
+            {
+                String[] rowOfData = new String[2];
+                Integer primaryKey = (Integer)rs.getInt(1);
+                rowOfData[0] = primaryKey.toString();
+                rowOfData[1] = rs.getString(2);
+                dataFound.add(rowOfData);
+            }
+            
+            con.close();
+        }
+        catch (Exception e)
+        {
+            System.out.println(e);
+        }
+        return dataFound;
+    }
+
+    /**
      * Method to check if the specified database contains any rows.
      * @param dbToCheck Name of the database to check.
      * @return true if database is empty, false otherwise
@@ -141,50 +185,6 @@ public class DatabaseUtils
             System.out.println(e);
         }
         return isSuccessful;
-    }
-    
-    /**
-     * Search the database and if any data is contained then return it
-     * @param tableName the name of the table to search for data
-     * @return data contained in the table
-     */
-    public ArrayList<String[]> getDataFromTable(String tableName)
-    {
-        ArrayList<String[]> dataFound = new ArrayList<>();
-        
-        try
-        {
-            // Use the JDBC Driver Class for Connections
-            Class.forName("com.mysql.jdbc.Driver");
-            
-            // Establish Connection to the database
-            Connection con = DriverManager.getConnection(
-            connectionString, dbUsername, dbPassword);
-            
-            Statement stmt = con.createStatement();
-            
-            // Select all from the table specified
-            String searchQuery = "SELECT * FROM " + tableName;
-            
-            ResultSet rs = stmt.executeQuery(searchQuery);
-            
-            // If the result set contains information, add to data found
-            while(rs.next())
-            {
-                String[] rowOfData = new String[2];
-                Integer primaryKey = (Integer)rs.getInt(1);
-                rowOfData[0] = primaryKey.toString();
-                rowOfData[1] = rs.getString(2);
-                dataFound.add(rowOfData);
-            }
-            
-            con.close();
-        }
-        catch (Exception e)
-        {
-            System.out.println(e);
-        }
-        return dataFound;
     }
     
     /**

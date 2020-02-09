@@ -6,8 +6,6 @@
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Connection;
-import java.sql.DriverManager;
 import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -55,28 +53,7 @@ public class WebServlet extends HttpServlet {
             //Print beginning data from test_table
             out.println("<p>Running sql query: SELECT * FROM test_table</p>");
             ArrayList<String[]> dataFromTable = sampleDatabase.getDataFromTable(TABLE);
-            printTable(out, dataFromTable);
-            
-//            //Run SQL Insert Statement and print result
-//            out.println("<p>Running sql query: " + 
-//                    "INSERT INTO test_table (`primary_key`, `test_string`) VALUES ('3', 'Hola')</p>");
-//            String[] colNames = {"primary_key", "test_string"};
-//            String[] colTypes = {"int", "String"};
-//            String rawData = "3,Hola";
-//            sampleDatabase.writeDataToDatabase(TABLE, colNames, colTypes, rawData);
-//            
-//            dataFromTable = sampleDatabase.getDataFromTable(TABLE);
-//            printTable(out, dataFromTable);
-//            
-//            
-//            //Run SQL Delete Statement and print result
-//            out.println("<p>Running sql query: " + 
-//                    "DELETE FROM `test_table` WHERE (`primary_key` = '3')");
-//            sampleDatabase.deleteRowOnePK(TABLE, "primary_key", "3");
-//            
-//            dataFromTable = sampleDatabase.getDataFromTable(TABLE);
-//            printTable(out, dataFromTable);
-            
+            printTable(out, dataFromTable);           
         }
    
     }
