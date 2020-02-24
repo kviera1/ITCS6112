@@ -24,8 +24,8 @@ public class WebServlet extends HttpServlet {
     
     private final String CONNECTION = "jdbc:mysql://localhost:3306/test_schema";
     private final String DBUSER = "root";
-    private final String DBPASS = "Familyof7!";
-    private final String TABLE = "test_table";
+    private final String DBPASS = "your_password";
+    private final String TABLE = "your_table";
     
     
     /**
