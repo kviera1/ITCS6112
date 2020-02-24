@@ -7,10 +7,14 @@
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  *
@@ -36,6 +40,11 @@ public class WebServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
+        //Create a JSON object to be returned
+        JSONObject json = new JSONObject();
+        
+        
+        
         //Create a DatabaseUtil object representing the test_schema Schema in mySQL
         DatabaseUtils sampleDatabase = new DatabaseUtils(CONNECTION,DBUSER,DBPASS);
         
@@ -45,15 +54,27 @@ public class WebServlet extends HttpServlet {
             connectionString = "Connected!";
         }
         
-        response.setContentType("text/html;charset=UTF-8");
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            out.println("<h1>Welcome to my first servlet application in Netbeans</h1>");
-            out.println("<p>Database Connection Status: " + connectionString + "</p>");
             
-            //Print beginning data from test_table
-            out.println("<p>Running sql query: SELECT * FROM test_table</p>");
+            //Get data from test_table
             ArrayList<String[]> dataFromTable = sampleDatabase.getDataFromTable(TABLE);
-            printTable(out, dataFromTable);           
+            
+            if(!dataFromTable.isEmpty()){
+                for(String[] data : dataFromTable){
+                    try {
+                        SampleData tableData = new SampleData(data[0],data[1]);
+                        json.accumulate("col1", tableData.getKey());
+                        json.accumulate("col2", tableData.getString());
+                    } catch (JSONException ex) {
+                        Logger.getLogger(WebServlet.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }
+            
+            out.print(json);
+            out.flush();
         }
    
     }
@@ -96,23 +117,5 @@ public class WebServlet extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-    
-    private void printTable(PrintWriter out, ArrayList<String[]> dataFromTable){
-        out.println("<p>Printing contents of test_table... " 
-                + dataFromTable.size() + " rows of data found.</p>");
-        out.println("+---------------+--------------+");
-        out.println("<br /> | primary_key | test_string  |");
-        out.println("<br />+---------------+--------------+");
-        if(!dataFromTable.isEmpty()){
-            for(String[] data : dataFromTable){
-                out.println("<br /><pre>|     " + data[0] + "    |     " + 
-                        data[1] + "  |</pre>");
-                out.println("+---------------+--------------+");
-            }
-        }
-        else{
-            out.println("<p>Table " + TABLE + " Empty!</p>");
-        }
-    }
     
 }

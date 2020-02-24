@@ -9,8 +9,28 @@ and open the template in the editor.
         <title>Hello World</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.9/angular.js"></script>
+        <script src="js/AngularController.js" type="text/javascript"></script>
+        <link href="WebStyle.css" rel="stylesheet" type="text/css"/>
     </head>
-    <body>
-        <h4>Click here to go to <a href="hello">WebServlet page</a></h4>
-    </body>
+     <body ng-app='myapp'>
+
+  <div ng-controller="userCtrl">
+      <p>Test Database:</p>  
+    <table >
+      <tr>
+        <th>primary_key</th>
+        <th>test_string</th>
+      </tr>
+  
+      <!-- Display records -->
+      <tr ng-repeat="data in msgFromServlet.col1">
+        <td>{{msgFromServlet.col1[$index]}}</td>
+        <td>{{msgFromServlet.col2[$index]}}</td>
+      </tr>
+ 
+    </table>
+  </div>
+ 
+ </body>
 </html>
