@@ -22,6 +22,7 @@ import org.json.JSONObject;
  */
 public class WebServlet extends HttpServlet {
     
+    private final String test = "test";
     private final String CONNECTION = "jdbc:mysql://localhost:3306/test_schema";
     private final String DBUSER = "root";
     private final String DBPASS = "Familyof7!";
