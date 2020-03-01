@@ -7,6 +7,8 @@
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -21,12 +23,12 @@ import org.json.JSONObject;
  * @author stormking
  */
 public class WebServlet extends HttpServlet {
-    
-    private final String CONNECTION = "jdbc:mysql://localhost:3306/test_schema";
-    private final String DBUSER = "root";
-    private final String DBPASS = "Familyof7!";
-    private final String TABLE = "test_table";
-    
+
+    private final String CONNECTION = System.getenv("DBCONNECTION");
+    private final String DBNAME = System.getenv("DBNAME");
+    private final String DBUSER = System.getenv("DBUSER");
+    private final String DBPASS = System.getenv("DBPASS");
+    private final String TABLE = "example_table";
     
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -46,7 +48,7 @@ public class WebServlet extends HttpServlet {
         
         
         //Create a DatabaseUtil object representing the test_schema Schema in mySQL
-        DatabaseUtils sampleDatabase = new DatabaseUtils(CONNECTION,DBUSER,DBPASS);
+        DatabaseUtils sampleDatabase = new DatabaseUtils(CONNECTION + DBNAME,DBUSER,DBPASS);
         
         //Test connection to database
         String connectionString = "Not Connected";
